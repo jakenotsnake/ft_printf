@@ -6,7 +6,7 @@
 /*   By: jtanner <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 13:14:52 by jtanner           #+#    #+#             */
-/*   Updated: 2022/05/31 15:01:58 by jtanner          ###   ########.fr       */
+/*   Updated: 2022/06/02 14:33:39 by jtanner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdarg.h>
@@ -17,7 +17,7 @@ int	ft_printchar(int	c)
 	return(1);
 }
 
-int	ft_formats(va_list	args, const char foramt)
+int	ft_formats(va_list	args, const char format)
 {
 	int	printlen;
 
@@ -28,7 +28,7 @@ int	ft_formats(va_list	args, const char foramt)
 		printlen += ft_printstr(va_list(args, char *));
 	else if (format == 'p')
 		printlen += ft_printptr(va_list(args, unsigned long long));
-	else if (format == 'd' || formart == 'i')
+	else if (format == 'd' || format == 'i')
 		printlen += ft_printnum(va_list(args, int));
 	else if (format == 'u')
 		printlen += ft_printunsigned(va_list(args, unsigned int));
