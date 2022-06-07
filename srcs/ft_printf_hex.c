@@ -6,9 +6,17 @@
 /*   By: jtanner <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 14:26:00 by jtanner           #+#    #+#             */
-/*   Updated: 2022/06/07 14:08:49 by jtanner          ###   ########.fr       */
+/*   Updated: 2022/06/07 16:36:38 by jtanner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
+
+void ft_printchar(int c)
+{
+	write(1, &c, 1);
+}
 
 int	ft_hexlen(unsigned int	n)
 {
@@ -23,14 +31,14 @@ int	ft_hexlen(unsigned int	n)
 	return (i);
 }
 
-void	ft_puthex(unsigned int n, format)
+void	ft_puthex(unsigned int ptr, char format)
 {
 	if (format == 'x')
 	{
 		if (ptr >= 16)
 		{
-			ft_putptr(ptr / 16);
-			ft_putptr(ptr % 16);         
+			ft_puthex(ptr / 16, format);
+			ft_puthex(ptr % 16, format);         
 		}
 		else if (ptr <= 9)
 			ft_printchar(ptr + '0');
@@ -41,8 +49,8 @@ void	ft_puthex(unsigned int n, format)
 	{
 		if (ptr >= 16)
 		{
-			ft_putptr(ptr / 16);
-			ft_putptr(ptr % 16);         
+			ft_puthex(ptr / 16, format);
+			ft_puthex(ptr % 16, format);         
 		}
 		else if (ptr <= 9)
 			ft_printchar(ptr + '0');
@@ -50,7 +58,7 @@ void	ft_puthex(unsigned int n, format)
 			ft_printchar((ptr - 10) + 'A');
 	}
 }
-int	ft_printhex(unsigned int n, format)
+int	ft_printhex(unsigned int n, char format)
 {
 	int i;
 	
@@ -59,4 +67,10 @@ int	ft_printhex(unsigned int n, format)
 	ft_puthex(n, format);
 	i += ft_hexlen(n);
 	return(i);
+}
+
+int main(void)
+{
+	printf("\n%d\n", ft_printhex(12344, 'X'));
+	return (0);
 }
