@@ -6,13 +6,14 @@
 /*   By: jtanner <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 13:03:04 by jtanner           #+#    #+#             */
-/*   Updated: 2022/06/02 13:49:37 by jtanner          ###   ########.fr       */
+/*   Updated: 2022/06/16 18:33:11 by jtanner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+#include "../includes/ft_printf.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <string.h>
 
 int	ft_uitoalen(unsigned int n)
 {
@@ -24,45 +25,46 @@ int	ft_uitoalen(unsigned int n)
 		n = n / 10;
 		i++;
 	}
-	return(i);
+	return (i);
 }
 
 char	*ft_uitoa(unsigned int n)
 {
 	char	*num;
-	int	len;
+	int		i;
+	long	nbr;
 
-	len = ft_uitoalen(n);
-	num = (char *)malloc(sizeof(char) * (len + 1));
+	i = 0;
+	nbr = n;
+	num = (char *)malloc(sizeof(char) * (len(nbr) + 1));
 	if (!num)
-		return(0);
-	else
-		num[len] = '\0';
-	while (n != 0)
+		return (NULL);
+	if (nbr < 0)
 	{
-		num[len-1] = n % 10 + 48;
-		n = n / 10;
-		len--;
+		num[i++] = '-';
+		nbr *= -1;
 	}
-	return(num);
+	num = itoastr(nbr, num, &i);
+	num[i] = '\0';
+	return (num);
 }
 
 int	ft_printf_unsigned(unsigned int n)
 {
 	char	*num;
-	int	i;
+	int		i;
 
 	i = 0;
 	if (n == 0)
 	{
 		write(1, "0", 1);
-		return(1);
+		return (1);
 	}
 	else
 	{
 		num = ft_uitoa(n);
-		i += ft_putstr(num);
+		i += ft_printstr(num);
 		free(num);
 	}
-	return(i);
+	return (i);
 }

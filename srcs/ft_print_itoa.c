@@ -1,58 +1,68 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_ptr.c                                    :+:      :+:    :+:   */
+/*   ft_print_itoa.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jtanner <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/30 13:15:10 by jtanner           #+#    #+#             */
-/*   Updated: 2022/06/16 16:52:40 by jtanner          ###   ########.fr       */
+/*   Created: 2022/06/16 15:17:47 by jtanner           #+#    #+#             */
+/*   Updated: 2022/06/16 19:15:34 by jtanner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <stdlib.h>
-#include <unistd.h>
 #include <stdio.h>
-#include <stdint.h>
 #include "../includes/ft_printf.h"
 
-int	ft_ptrlen(uintptr_t	ptr)
+int	len(long nb)
 {
-	int	len;
+	int		len;
 
 	len = 0;
-	while (ptr != 0)
+	if (nb < 0)
 	{
-		ptr = ptr / 16;
-		len ++;
+		nb = nb * -1;
+		len++;
+	}
+	while (nb > 0)
+	{
+		nb = nb / 10;
+		len++;
 	}
 	return (len);
 }
 
-void	ft_putptr(uintptr_t ptr)
+char	*itoastr(long n, char *str, int *i)
 {
-	if (ptr >= 16)
+	if (n > 9)
 	{
-		ft_putptr(ptr / 16);
-		ft_putptr(ptr % 16);
+		itoastr(n / 10, str, i);
+		itoastr(n % 10, str, i);
 	}
-	else if (ptr <= 9)
-		ft_printchar(ptr + '0');
 	else
-		ft_printchar((ptr - 10) + 'a');
+	{
+		str[(*i)++] = n + '0';
+	}
+	return (str);
 }
 
-int	ft_printptr(unsigned long long ptr)
+char	*ft_itoa(int n)
 {
-	int	printlen;
+	char	*str;
+	int		i;
+	long	nbr;
 
-	printlen = 0;
-	printlen += write(1, "0x", 2);
-	if (ptr == 0)
-		printlen += write(1, "0", 1);
-	else
+	nbr = n;
+	str = malloc(sizeof(char) * (len(nbr) + 1));
+	if (!str)
+		return (NULL);
+	i = 0;
+	if (nbr < 0)
 	{
-		ft_putptr(ptr);
-		printlen += ft_ptrlen(ptr);
+		str[i++] = '-';
+		nbr *= -1;
 	}
-	return (printlen);
+	str = itoastr(nbr, str, &i);
+	str[i] = '\0';
+	return (str);
 }
